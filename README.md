@@ -39,3 +39,14 @@ F1 (unbalanced): 0.7521144229981033
 
 F1 (per class): [0.83991385 0.70811744 0.57844991 0.70088496]   
 (Difficulty in recognizing the class Rain)
+
+
+# TO DO:
+
+- Investigate on the Rain samples!
+
+- Data augmentation?
+
+- Transfer Learning from ImageNet
+
+- Adding Validation 
