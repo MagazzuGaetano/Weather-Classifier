@@ -39,3 +39,14 @@ F1 (unbalanced): 0.8150129599838696
 
 F1 (per class): [0.86742172 0.82180294 0.69921875 0.76388889]  
 (Difficulty in recognizing the class Rain)
+
+
+# TO DO:
+
+- Investigate on the Rain samples!
+
+- Transfer Learning from ImageNet
+
+- Adding Validation 
+
+- Save Checkpoint to resume previus experiments
