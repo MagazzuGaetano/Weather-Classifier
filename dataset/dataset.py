@@ -19,7 +19,7 @@ class WeatherDataset(Dataset):
 
         self.file_name = [filename for filename in os.listdir(self.image_path) \
                 if os.path.isfile(os.path.join(self.image_path, filename))]
-        self.file_name = self.file_name[:800]
+        self.file_name = self.file_name[:850]
         self.num_samples = len(self.file_name)
 
         self.img_transform = None
@@ -73,7 +73,7 @@ class WeatherDataset(Dataset):
             gt = [0, 0, 0, 1]
         else:
             print('invalid gt!!!')
-        gt = np.asarray(gt)
+        gt = np.asarray(gt).reshape((1, NUM_CLASSES))
 
         return img, gt
 
