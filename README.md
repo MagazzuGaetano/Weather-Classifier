@@ -24,7 +24,7 @@ MOMENTUM = 0.9
 
 # 
 
-train_time: 11034015.0ms ~ 3hs
+train_time: ~ 22 minutes
 
 #
 
@@ -45,8 +45,6 @@ F1 (per class): [0.86742172 0.82180294 0.69921875 0.76388889]
 
 - Investigate on the Rain samples!
 
-- Transfer Learning from ImageNet
-
-- Adding Validation 
+- Transfer Learning from ImageNet (To Fix)
 
 - Save Checkpoint to resume previus experiments
