@@ -45,8 +45,8 @@ F1 (per class): [0.83991385 0.70811744 0.57844991 0.70088496]
 
 - Investigate on the Rain samples!
 
-- Data augmentation?
-
 - Transfer Learning from ImageNet
 
 - Adding Validation 
+
+- Save Checkpoint to resume previus experiments
