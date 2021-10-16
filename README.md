@@ -3,10 +3,8 @@ An Image Classifier for fog/rain/snow/no weather degradation implemented in Pyto
 
 # Experiment Hyperparameters
 
-MEAN_STD = (          
-    [0.4895458993165764, 0.4818306551357414, 0.47606749903585005],      
-    [0.2629639647390231, 0.2631807514426538, 0.2756703080034581]    
-)   
+MEAN = [0.4895458993165764, 0.4818306551357414, 0.47606749903585005]    
+STD = [0.2629639647390231, 0.2631807514426538, 0.2756703080034581]     
 (Obtained by average the mean_std per each one of the classes)
     
 
