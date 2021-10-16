@@ -30,12 +30,12 @@ train_time: 11034015.0ms ~ 3hs
 
 # Results (on test set):
 
-Corrected Classified: 1141 / 1533
+Corrected Classified: 1246 / 1533
 
-F1: 0.7442922374429224
+F1: 0.8127853881278538
 
-F1 (unbalanced): 0.7521144229981033     
+F1 (unbalanced): 0.8150129599838696     
 (Im keeping this metrics for future training because the total dataset is unbalanced, but i've trained on a balanced one)
 
-F1 (per class): [0.83991385 0.70811744 0.57844991 0.70088496]   
+F1 (per class): [0.86742172 0.82180294 0.69921875 0.76388889]  
 (Difficulty in recognizing the class Rain)
