@@ -11,9 +11,9 @@ from PIL import Image
 from torch.autograd import Variable
 from sklearn.metrics import f1_score
 
+random.seed(314)
 
 img_transform = standard_transforms.Compose([
-    standard_transforms.RandomCrop(TRAIN_SIZE),
     standard_transforms.ToTensor(),
     standard_transforms.Normalize(*MEAN_STD)
 ])
@@ -23,7 +23,7 @@ gt_transform = standard_transforms.Compose([
 ])
 
 # reload
-PATH = './classifier.pth'
+PATH = './checkpoint.pth'
 net = net(NUM_CLASSES)
 net.load_state_dict(torch.load(PATH), strict=False)
 net.eval()
@@ -42,6 +42,7 @@ for classname in CLASSES:
         img = Image.open(os.path.join(input_path, img_name))
         if img.mode == 'L':
             img = img.convert('RGB')
+        img = img.resize(TRAIN_SIZE)
         img = img_transform(img)
 
         # read ground-truth
@@ -84,10 +85,9 @@ print("F1 (per class): {}".format(f1_score(labels, predicted, average=None)))
 
 
 """
-corrected classified: 1141 / 1533
-F1: 0.7442922374429224
-F1 (unbalanced): 0.7521144229981033
-F1 (per class): [0.83991385 0.70811744 0.57844991 0.70088496]
-
+corrected classified: 1246 / 1533
+F1: 0.8127853881278538
+F1 (unbalanced): 0.8150129599838696
+F1 (per class): [0.86742172 0.82180294 0.69921875 0.76388889]
 Difficoltà nel riconoscere le scene con pioggia
 """
