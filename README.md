@@ -1,6 +1,6 @@
 # Weather-Classifier
 An Image Classifier for fog/rain/snow/no weather degradation implemented in Pytorch, the model selected for this study is the ResNet50.     
-The dataset is a combination of the JHU-CROWD++ dataset and 
+The dataset is a combination of the [JHU-CROWD++](http://www.crowd-counting.com/) and the [Rain Fog Snow Dataset](https://github.com/ZebaKhanam91/SP-Weather).
 
 # Experiment Hyperparameters
 
@@ -49,3 +49,9 @@ F1 (unbalanced) Im keeping this metrics for future training because the total da
 - Transfer Learning from ImageNet (To Fix)
 
 - Save Checkpoint to resume previus experiments
+
+# Citations:
+
+- (JHU-CROWD++) Sindagi, Vishwanath A and Yasarla, Rajeev and Patel, Vishal M, [JHU-CROWD++: Large-Scale Crowd Counting Dataset and A Benchmark Method](https://arxiv.org/abs/2004.03597), IEEE Transactions on Pattern Analysis and Machine Intelligence (T-PAMI), (2020)
+
+- (RFS Dataset) Jose Carlos Villarreal Guerra, Zeba Khanam, Shoaib Ehsan, Rustam Stolkin, Klaus McDonald-Maier, [Weather Classification: A new multi-class dataset, data augmentation approach and comprehensive evaluations of Convolutional Neural Networks](https://arxiv.org/pdf/1808.00588.pdf), (2018) 
