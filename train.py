@@ -1,80 +1,28 @@
-import torch
 from torch import optim
 import torch.nn as nn
-from dataset.loading_data import loading_data
-from models.ResNet import ResNet50 as net
-import numpy as np
-from torchvision import models
+import torch
 
+import numpy as np
 from config import *
 
+#------------prepare enviroment------------
+seed = SEED
+if seed != None:
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
 
-import random
-random.seed(316)
+torch.cuda.set_device("cuda:0" if torch.cuda.is_available() else "cpu")
+torch.backends.cudnn.benchmark = True
 
-
-def train(train_loader, val_loader, net):
-
-    min_valid_loss = np.inf
-    for epoch in range(MAX_EPOCH):  # loop over the dataset multiple times
-
-        running_loss = 0.0
-        for i, data in enumerate(train_loader, 0):
-            # Transfer Data to GPU if available
-            if torch.cuda.is_available():
-                inputs, labels = data
-                inputs, labels = inputs.cuda(), labels.cuda()
-
-            # zero the parameter gradients
-            optimizer.zero_grad()
-
-            # forward + backward + optimize
-            outputs = net(inputs)
-
-            # Transform labels to one-hot-encode to scalars
-            labels = torch.argmax(labels, dim=2).flatten()
-
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
-
-            # print statistics
-            running_loss += loss.item()
-        
-        min_valid_loss = validation(net, epoch, running_loss/len(train_loader), val_loader, min_valid_loss)
+start = torch.cuda.Event(enable_timing=True)
+end = torch.cuda.Event(enable_timing=True)
 
 
-def validation(model, epoch, train_loss, val_loader, min_valid_loss):
-    valid_loss = 0.0
-    model.eval() # Optional when not using Model Specific layer
-
-    for data, labels in val_loader:
-        # Transfer Data to GPU if available
-        if torch.cuda.is_available():
-            data, labels = data.cuda(), labels.cuda()
-
-        with torch.no_grad():
-            # Forward Pass
-            predict = model(data)
-
-        # Transform labels to one-hot-encode to scalars
-        labels = torch.argmax(labels, dim=2).flatten()
-        # Find the Loss
-        loss = criterion(predict, labels)
-        # Calculate Loss
-        valid_loss += loss.item()
-
-    valid_loss = valid_loss / len(val_loader)
-    print('Epoch {} - Training loss: {} - Validation Loss: {}'.format(epoch+1, train_loss, valid_loss))
-
-    if min_valid_loss > valid_loss:
-        print('Validation Loss Decreased({}--->{})  Saving The Model'.format(min_valid_loss, valid_loss))
-        min_valid_loss = valid_loss
-
-        # Saving State Dict
-        torch.save(model.state_dict(), 'checkpoint.pth')
-
-    return min_valid_loss
+from dataset.loading_data import loading_data
+from models.ResNet import ResNet50 as Model
+from torchvision import models
+from trainer import Trainer
 
 
 # Transfer learning from ImageNet
@@ -83,34 +31,30 @@ if PRETRAINED:
     num_ftrs = net.fc.in_features
     net.fc = nn.Linear(num_ftrs, NUM_CLASSES)
 else:
-    net = net(NUM_CLASSES)
+    net = Model(NUM_CLASSES)
+net = net.cuda()
 
-
-train_loader, val_loader = loading_data()
-criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=LR, momentum=MOMENTUM)
+criterion = nn.CrossEntropyLoss().cuda()
 
-if torch.cuda.is_available():
-    net = net.cuda()
-    criterion = criterion.cuda()
-
-start = torch.cuda.Event(enable_timing=True)
-end = torch.cuda.Event(enable_timing=True)
+#------------Start Training------------
+cc_trainer = Trainer(net, loading_data, optimizer, criterion)
 
 start.record()
-
-train(train_loader, val_loader, net)
-
-# whatever you are timing goes here
+cc_trainer.forward()
 end.record()
 
-# Waits for everything to finish running
 torch.cuda.synchronize()
-
 print('Finished Training')
-print(start.elapsed_time(end))  # milliseconds
+print(start.elapsed_time(end))
 
-
-# save
-PATH = './classifier.pth'
-torch.save(net.state_dict(), PATH)
+PATH = './latest_state.pth'
+latest_state = {
+    'net': cc_trainer.net.state_dict(),
+    'optimizer':cc_trainer.optimizer.state_dict(),
+    'epoch': cc_trainer.epoch,
+    'i_tb': cc_trainer.i_tb,
+    'min_valid_loss': cc_trainer.min_valid_loss,
+    'mean_std': MEAN_STD
+}
+torch.save(latest_state, PATH)
