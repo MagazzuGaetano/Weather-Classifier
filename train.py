@@ -2,7 +2,7 @@ import torch
 from torch import optim
 import torch.nn as nn
 from dataset.loading_data import loading_data
-from models.Res50 import ResNet50
+from models.ResNet import ResNet50 as net
 import numpy as np
 from torchvision import models
 
@@ -83,7 +83,7 @@ if PRETRAINED:
     num_ftrs = net.fc.in_features
     net.fc = nn.Linear(num_ftrs, NUM_CLASSES)
 else:
-    net = ResNet50(NUM_CLASSES)
+    net = net(NUM_CLASSES)
 
 
 train_loader, val_loader = loading_data()

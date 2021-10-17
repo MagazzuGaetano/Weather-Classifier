@@ -1,6 +1,6 @@
 # test
 import torch
-from models.Res50 import ResNet50 as net
+from models.ResNet import ResNet50 as net
 from config import *
 import os
 import cv2
