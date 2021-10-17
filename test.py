@@ -3,15 +3,24 @@ import torch
 from models.ResNet import ResNet50 as net
 from config import *
 import os
-import cv2
 import numpy as np
 import random
 import torchvision.transforms as standard_transforms
 from PIL import Image
 from torch.autograd import Variable
 from sklearn.metrics import f1_score
+from config import *
 
-random.seed(314)
+
+seed = SEED
+if seed != None:
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+
+torch.cuda.set_device("cuda:0" if torch.cuda.is_available() else "cpu")
+torch.backends.cudnn.benchmark = True
+
 
 img_transform = standard_transforms.Compose([
     standard_transforms.ToTensor(),
@@ -23,7 +32,7 @@ gt_transform = standard_transforms.Compose([
 ])
 
 # reload
-PATH = './classifier.pth'
+PATH = './latest_state.pth'
 net = net(NUM_CLASSES)
 net.load_state_dict(torch.load(PATH), strict=False)
 net.eval()
