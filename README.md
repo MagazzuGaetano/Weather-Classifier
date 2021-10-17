@@ -41,14 +41,12 @@ Difficulty in recognize the Rain class
 F1 (unbalanced) Im keeping this metrics for future training because the total dataset is unbalanced, but i've trained on a balanced one
 
 
-
 # TO DO:
 
 - Investigate on the Rain samples!
 
 - Transfer Learning from ImageNet (To Fix)
 
-- Save Checkpoint to resume previus experiments
 
 # Citations:
 
