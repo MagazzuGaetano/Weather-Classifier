@@ -114,6 +114,3 @@ print(start.elapsed_time(end))  # milliseconds
 # save
 PATH = './classifier.pth'
 torch.save(net.state_dict(), PATH)
-
-# 11034015.0ms ~ 3 ore
-# 0,221148333 min

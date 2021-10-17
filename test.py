@@ -23,7 +23,7 @@ gt_transform = standard_transforms.Compose([
 ])
 
 # reload
-PATH = './checkpoint.pth'
+PATH = './classifier.pth'
 net = net(NUM_CLASSES)
 net.load_state_dict(torch.load(PATH), strict=False)
 net.eval()
@@ -65,9 +65,6 @@ for classname in CLASSES:
             img = Variable(img[None,:,:,:])            
             output = net(img)
 
-            #print(gt.size())
-            #print(img.size())
-
             if np.argmax(gt) == np.argmax(output):
                 correct = correct + 1
             else:
@@ -84,10 +81,6 @@ print("F1 (unbalanced): {}".format(f1_score(labels, predicted, average='weighted
 print("F1 (per class): {}".format(f1_score(labels, predicted, average=None)))
 
 
-"""
-corrected classified: 1246 / 1533
-F1: 0.8127853881278538
-F1 (unbalanced): 0.8150129599838696
-F1 (per class): [0.86742172 0.82180294 0.69921875 0.76388889]
-Difficoltà nel riconoscere le scene con pioggia
-"""
+
+
+
