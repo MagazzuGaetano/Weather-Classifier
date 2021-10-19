@@ -47,14 +47,3 @@ end.record()
 torch.cuda.synchronize()
 print('Finished Training')
 print(start.elapsed_time(end))
-
-PATH = './latest_state.pth'
-latest_state = {
-    'net': cc_trainer.net.state_dict(),
-    'optimizer':cc_trainer.optimizer.state_dict(),
-    'epoch': cc_trainer.epoch,
-    'i_tb': cc_trainer.i_tb,
-    'min_valid_loss': cc_trainer.min_valid_loss,
-    'mean_std': MEAN_STD
-}
-torch.save(latest_state, PATH)

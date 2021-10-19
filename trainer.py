@@ -33,6 +33,8 @@ class Trainer():
             train_loss = self.train()
             self.validate(train_loss)
 
+        self.save_model('latest_state.pth') # save final model
+
 
     def train(self):
         self.net.train()
@@ -96,17 +98,20 @@ class Trainer():
 
         if self.min_valid_loss > valid_loss:
             print('Validation Loss Decreased({}--->{})  Saving The Model'.format(self.min_valid_loss, valid_loss))
+
             self.min_valid_loss = valid_loss
+            self.save_model('checkpoint.pth') # save checkpoint
 
-            latest_state = {
-                'net': self.net.state_dict(),
-                'optimizer':self.optimizer.state_dict(),
-                'epoch': self.epoch,
-                'i_tb': self.i_tb,
-                'min_valid_loss': self.min_valid_loss,
-                'mean_std': MEAN_STD
-            }
 
-            # Saving State Dict
-            torch.save(latest_state, 'checkpoint.pth')
+    def save_model(self, model_name):
+        latest_state = {
+            'net': self.net.state_dict(),
+            'optimizer':self.optimizer.state_dict(),
+            'epoch': self.epoch,
+            'i_tb': self.i_tb,
+            'min_valid_loss': self.min_valid_loss,
+            'mean_std': MEAN_STD
+        }
 
+        # Saving State Dict
+        torch.save(latest_state, model_name)
