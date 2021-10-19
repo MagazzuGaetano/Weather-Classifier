@@ -1,5 +1,6 @@
 import os
 import torchvision.transforms as standard_transforms
+from torchvision.transforms.transforms import RandomHorizontalFlip
 from .dataset import WeatherDataset
 from torch.utils.data import DataLoader, ConcatDataset
 from config import *
@@ -7,6 +8,7 @@ from config import *
 
 def createTrainData(datasetname, Dataset):
     img_transform = standard_transforms.Compose([
+        standard_transforms.RandomHorizontalFlip(),
     	standard_transforms.RandomCrop(TRAIN_SIZE),
         standard_transforms.ToTensor(),
         standard_transforms.Normalize(*MEAN_STD)
