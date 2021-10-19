@@ -4,7 +4,7 @@ MEAN_STD = (
     [0.2629639647390231, 0.2631807514426538, 0.2756703080034581]
 )
 
-SEED = 3142
+SEED = 314
 PRETRAINED = False
 RESUME = False
 RESUME_PATH = './latest_state.pth'
@@ -13,8 +13,8 @@ TRAIN_SIZE = (256, 256) #(224, 224)
 TRAIN_BATCH_SIZE = 16
 VAL_BATCH_SIZE = 16
 
-MAX_EPOCH = 20
-LR = 0.001
+MAX_EPOCH = 15
+LR = 1e-5 if PRETRAINED else 0.001
 MOMENTUM = 0.9
 
 CLASSES = ['no weather degradation', 'fog', 'rain', 'snow']
