@@ -32,8 +32,8 @@ gt_transform = standard_transforms.Compose([
 ])
 
 # reload
-PATH = './latest_state.pth'
-net = net(NUM_CLASSES)
+PATH = './checkpoint.pth'
+net = net(NUM_CLASSES).cuda()
 net.load_state_dict(torch.load(PATH), strict=False)
 net.eval()
 
@@ -71,8 +71,8 @@ for classname in CLASSES:
 
         # Disable grad
         with torch.no_grad():
-            img = Variable(img[None,:,:,:])            
-            output = net(img)
+            img = img[None,:,:,:].cuda()         
+            output = net(img).cpu()
 
             if np.argmax(gt) == np.argmax(output):
                 correct = correct + 1
