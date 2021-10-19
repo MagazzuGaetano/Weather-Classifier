@@ -41,11 +41,20 @@ Difficulty in recognize the Rain class
 F1 (unbalanced) Im keeping this metrics for future training because the total dataset is unbalanced, but i've trained on a balanced one
 
 
-# TO DO:
+# TO DO (Bugs):
+
+- Transfer Learning from ImageNet (To Fix!)
+
+- Training with Trainer.py and Train.py (To Fix!)
+
+
+# How to improve:
 
 - Investigate on the Rain samples!
 
-- Transfer Learning from ImageNet (To Fix)
+- More Data Augmentation?
+
+- Try more deep? resnet101? explore context?
 
 
 # Citations:
