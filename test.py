@@ -8,9 +8,8 @@ import random
 import torchvision.transforms as standard_transforms
 from PIL import Image
 from torch.autograd import Variable
-from sklearn.metrics import f1_score
 from config import *
-
+from dataset.label_preprocess import *
 
 seed = SEED
 if seed != None:
@@ -27,12 +26,9 @@ img_transform = standard_transforms.Compose([
     standard_transforms.Normalize(*MEAN_STD)
 ])
 
-gt_transform = standard_transforms.Compose([
-    standard_transforms.ToTensor()
-])
 
 # reload
-PATH = './checkpoint.pth'
+PATH = 'classifier.pth' #'./trained_models/res50_F1_0.8395.pth'
 net = net(NUM_CLASSES).cuda()
 net.load_state_dict(torch.load(PATH), strict=False)
 net.eval()
@@ -55,39 +51,29 @@ for classname in CLASSES:
         img = img_transform(img)
 
         # read ground-truth
-        gt = []
-        if classname == "no weather degradation":
-            gt = [1, 0, 0, 0]
-        elif classname == "fog":
-            gt = [0, 1, 0, 0]
-        elif classname == "rain":
-            gt = [0, 0, 1, 0]
-        elif classname == "snow":
-            gt = [0, 0, 0, 1]
-        else:
-            print('invalid gt!!!')
-        gt = np.asarray(gt).reshape((1, NUM_CLASSES))
-        gt = gt_transform(gt)
+        label = get_label(classname)
 
         # Disable grad
         with torch.no_grad():
-            img = img[None,:,:,:].cuda()         
-            output = net(img).cpu()
+            img = img[None,:,:,:].cuda()
 
-            if np.argmax(gt) == np.argmax(output):
+            output = net(img).cpu()
+            output = torch.nn.functional.softmax(output[0], dim=0)
+            output = torch.argmax(output, dim=0)
+            #output = torch.max(k.data, 1)[1].item() # cosi non sono probabilità!
+
+            if label == output:
                 correct = correct + 1
             else:
-                print('gt: {}, pred: {}'.format(np.argmax(gt), np.argmax(output)))
+                print('label: {}, pred: {}'.format(label, output))
 
-            labels.append(np.argmax(gt))
+            labels.append(np.argmax(label))
             predicted.append(np.argmax(output))
 
 
 total_images = 1533
 print("corrected classified: {} / {}".format(correct, total_images))
-print("F1: {}".format(f1_score(labels, predicted, average='micro')))
-print("F1 (unbalanced): {}".format(f1_score(labels, predicted, average='weighted')))
-print("F1 (per class): {}".format(f1_score(labels, predicted, average=None)))
+print("F1: {}".format(correct/total_images))
 
 
 

@@ -51,10 +51,6 @@ class Trainer():
 
             # forward + backward + optimize
             outputs = self.net(inputs)
-
-            # Transform labels to one-hot-encode to scalars
-            labels = torch.argmax(labels, dim=2).flatten()
-
             loss = self.criterion(outputs, labels)
             loss.backward()
             self.optimizer.step()
@@ -81,8 +77,6 @@ class Trainer():
                 # Forward Pass
                 predict = self.net(data)
 
-            # Transform labels to one-hot-encode to scalars
-            labels = torch.argmax(labels, dim=2).flatten()
             # Find the Loss
             loss = self.criterion(predict, labels)
             # Calculate Loss
