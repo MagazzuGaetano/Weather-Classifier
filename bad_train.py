@@ -4,13 +4,23 @@ import torch.nn as nn
 from dataset.loading_data import loading_data
 from models.ResNet import ResNet50
 import numpy as np
-
+from torchvision import models
 from config import *
 
 train_loader, val_loader = loading_data()
 
-criterion = nn.CrossEntropyLoss()
-net = ResNet50(NUM_CLASSES)
+
+# Transfer learning from ImageNet
+if PRETRAINED:
+    net = models.resnet50(pretrained=PRETRAINED)
+    num_ftrs = net.fc.in_features
+    net.fc = nn.Linear(num_ftrs, NUM_CLASSES)
+else:
+    net = ResNet50(NUM_CLASSES)
+net = net.cuda()
+
+
+criterion = nn.CrossEntropyLoss().cuda()
 optimizer = optim.SGD(net.parameters(), lr=LR, momentum=MOMENTUM)
 
 start = torch.cuda.Event(enable_timing=True)
@@ -24,6 +34,7 @@ for epoch in range(MAX_EPOCH):  # loop over the dataset multiple times
     for i, data in enumerate(train_loader, 0):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
+        inputs, labels = inputs.cuda(), labels.cuda()
 
         # zero the parameter gradients
         optimizer.zero_grad()
