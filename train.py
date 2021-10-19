@@ -45,5 +45,8 @@ cc_trainer.forward()
 end.record()
 
 torch.cuda.synchronize()
+torch.cuda.empty_cache() 
+
 print('Finished Training')
 print(start.elapsed_time(end))
+
