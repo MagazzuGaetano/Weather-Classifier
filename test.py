@@ -10,6 +10,7 @@ from PIL import Image
 from torch.autograd import Variable
 from config import *
 from dataset.label_preprocess import *
+from sklearn.metrics import f1_score
 
 seed = SEED
 if seed != None:
@@ -28,7 +29,7 @@ img_transform = standard_transforms.Compose([
 
 
 # reload
-PATH = 'latest_state.pth' #'./trained_models/res50_F1_0.8395_epochs_150_batch_8.pth'
+PATH = './trained_models/res50_F1_0.807_epochs_70_batch_16_dataAug.pth' #'./trained_models/res50_F1_0.8395_epochs_150_batch_8.pth'
 net = net(NUM_CLASSES).cuda()
 model = torch.load(PATH)
 if 'net' in model.keys():
@@ -71,15 +72,11 @@ for classname in CLASSES:
             else:
                 print('label: {}, pred: {}'.format(label, output))
 
-            labels.append(np.argmax(label))
-            predicted.append(np.argmax(output))
-
+            labels.append(label)
+            predicted.append(output)
 
 total_images = 1533
 print("corrected classified: {} / {}".format(correct, total_images))
-print("F1: {}".format(correct/total_images))
-
-
-
-
-
+print("F1: {}".format(f1_score(labels, predicted, average='micro')))
+print("F1 (per class): {}".format(f1_score(labels, predicted, average=None)))
+#print("F1 (unbalanced): {}".format(f1_score(labels, predicted, average='weighted')))
