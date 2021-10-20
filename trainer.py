@@ -2,6 +2,7 @@ import torch
 from torch import optim
 import torch.nn as nn
 import numpy as np
+from dataset.pytorchtools import EarlyStopping
 from config import *
 
 
@@ -16,6 +17,8 @@ class Trainer():
         self.epoch = 0
         self.i_tb = 0
         self.min_valid_loss = np.inf
+
+        self.early_stopping = EarlyStopping(patience=15, verbose=True)
 
         if RESUME:
             latest_state = torch.load(RESUME_PATH)
@@ -32,6 +35,10 @@ class Trainer():
 
             train_loss = self.train()
             self.validate(train_loss)
+
+            if self.early_stopping.early_stop:
+              print("Early stopping")
+              break
 
         self.save_model('latest_state.pth') # save final model
 
@@ -84,6 +91,7 @@ class Trainer():
         print('Epoch {} - Training loss: {} - Validation Loss: {}'.format(self.epoch+1, train_loss, valid_loss))
     
         self.save_checkpoint(valid_loss)
+        self.early_stopping(valid_loss, self.net)
 
 
     def save_checkpoint(self, valid_loss):
