@@ -18,7 +18,7 @@ class Trainer():
         self.i_tb = 0
         self.min_valid_loss = np.inf
 
-        self.early_stopping = EarlyStopping(patience=15, verbose=True)
+        self.early_stopping = EarlyStopping(patience=10, verbose=True)
 
         if RESUME:
             latest_state = torch.load(RESUME_PATH)

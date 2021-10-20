@@ -10,7 +10,7 @@ def createTrainData(datasetname, Dataset):
     img_transform = standard_transforms.Compose([
         standard_transforms.RandomHorizontalFlip(),
         # standard_transforms.RandomAutocontrast(), this can remove/reduce the haze effect!
-        standard_transforms.RandomGrayscale(),
+        # standard_transforms.RandomGrayscale(),
     	standard_transforms.RandomCrop(TRAIN_SIZE),
         standard_transforms.ToTensor(),
         standard_transforms.Normalize(*MEAN_STD)

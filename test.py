@@ -1,6 +1,6 @@
 # test
 import torch
-from models.ResNet import ResNet50 as net
+from models.ResNet import ResNet50, ResNet101
 from config import *
 import os
 import numpy as np
@@ -29,8 +29,8 @@ img_transform = standard_transforms.Compose([
 
 
 # reload
-PATH = './trained_models/res50_F1_0.807_epochs_70_batch_16_dataAug.pth' #'./trained_models/res50_F1_0.8395_epochs_150_batch_8.pth'
-net = net(NUM_CLASSES).cuda()
+PATH = 'checkpoint.pth' #'./trained_models/res50_F1_0.8395_epochs_150_batch_8.pth'
+net = ResNet101(NUM_CLASSES).cuda()
 model = torch.load(PATH)
 if 'net' in model.keys():
     net.load_state_dict(model['net'], strict=False)

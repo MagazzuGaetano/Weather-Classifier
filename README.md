@@ -8,7 +8,7 @@ MEAN = [0.4895458993165764, 0.4818306551357414, 0.47606749903585005]
 STD = [0.2629639647390231, 0.2631807514426538, 0.2756703080034581]     
 (Obtained by average the mean_std per each one of the classes)
     
-PRETRAINED=False # Transfer learning Bad Results (I have to freeze less layers)     
+PRETRAINED = False
 
 TRAIN_SIZE = (256, 256)
 
@@ -22,39 +22,42 @@ MOMENTUM = 0.9
 
 # Results (on test set):
 
-train_time: 2017029.0ms ~ 33 mins 70 epochs     
-MAX_EPOCH: 70   
+model: res50    
+train_time: 2017029.0ms ~ 33 mins 70 epochs      
 corrected classified: 1260 / 1533   
 F1: 0.821917808219178   
-F1 (per class): [0.8766368  0.82226981 0.70187394 0.8057041]    
-F1 (unbalanced): 0.8272478222940107     
+F1 (per class): [0.8766368  0.82226981 0.70187394 0.8057041]       
 
-
+model: res50    
 train_time: 4333681.5ms ~ 1,2 hs 150 epochs      
-MAX_EPOCH: 150      
 corrected classified: 1287 / 1533       
 F1: 0.8395303326810175      
-F1 (per class): [0.89566396 0.84599589 0.73511294 0.78246753]       
-F1 (unbalanced): 0.842190835711799  
+F1 (per class): [0.89566396 0.84599589 0.73511294 0.78246753]      
 
-Difficulty in recognize the Rain class      
-F1 (unbalanced) Im keeping this metrics for future training because the total dataset is unbalanced, but i've trained on a balanced one
+model: res101    
+train_time: 1192806.625 ms ~ 19,8801 mins 30 epochs      
+corrected classified: 1169 / 1533            
+F1: 0.7625570776255708      
+F1 (per class): [0.82472727 0.79148936 0.62838915 0.73737374]       
 
 
-# TO DO (Bugs):
+
+# TO DO & Bugs:
 
 - Transfer Learning from ImageNet (To Fix!)
 
-- Training with Trainer.py and Train.py (To Fix!)
+- Plot train and val losses
+
+- Refactoring
 
 
 # How to improve:
 
-- Investigate on the Rain samples!
+- Investigate on the Rain samples! (this dataset have a really complex concept for the class Rain)      
 
 - More Data Augmentation?
 
-- Try more deep? resnet101? explore context?
+- Try more deep? resnet101? explore context? try less parameters?
 
 
 # Citations:

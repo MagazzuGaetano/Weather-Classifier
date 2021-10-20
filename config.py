@@ -13,9 +13,10 @@ TRAIN_SIZE = (256, 256) #(224, 224)
 TRAIN_BATCH_SIZE = 16
 VAL_BATCH_SIZE = 16
 
-MAX_EPOCH = 15
-LR = 1e-5 if PRETRAINED else 0.001
+MAX_EPOCH = 30 #70
+LR = 1e-5 if PRETRAINED else 0.001 # there still a problem with transfer learnig!
 MOMENTUM = 0.9
 
 CLASSES = ['no weather degradation', 'fog', 'rain', 'snow']
 NUM_CLASSES = len(CLASSES)
+
