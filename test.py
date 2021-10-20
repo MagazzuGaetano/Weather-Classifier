@@ -28,9 +28,13 @@ img_transform = standard_transforms.Compose([
 
 
 # reload
-PATH = 'classifier.pth' #'./trained_models/res50_F1_0.8395.pth'
+PATH = 'latest_state.pth' #'./trained_models/res50_F1_0.8395_epochs_150_batch_8.pth'
 net = net(NUM_CLASSES).cuda()
-net.load_state_dict(torch.load(PATH), strict=False)
+model = torch.load(PATH)
+if 'state_dict' in model.keys():
+    net.load_state_dict(model['state_dict'], strict=False)
+else:
+    net.load_state_dict(model, strict=False)
 net.eval()
 
 correct = 0
