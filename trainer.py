@@ -55,9 +55,7 @@ class Trainer():
             loss.backward()
             self.optimizer.step()
 
-            # print statistics
             running_loss += loss.item()
-
             self.i_tb += 1
 
         #print('Epoch {} - Training loss: {}'.format(self.epoch+1, running_loss/len(self.train_loader)))
