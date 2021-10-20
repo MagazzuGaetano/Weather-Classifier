@@ -132,5 +132,5 @@ dmypy.json
 preprocessed_data/
 
 # Trained models
-./trained_models/res101_F1_0.7662_epochs_30_batch_16.pth
-./trained_models/res50_F1_0.807_epochs_70_batch_16_dataAug.pth
+trained_models/res101_F1_0.7662_epochs_30_batch_16.pth
+trained_models/res50_F1_0.807_epochs_70_batch_16_dataAug.pth
